@@ -1,9 +1,12 @@
+/* variables */
 let displayValue = 0;
 let operator = "";
 let firstNumber = 10;
 let secondNumber = 20;
+
+/* set initial display */
 const display = document.getElementById('display');
-display.textContent = `${displayValue}`
+display.textContent = 0
 
 
 
@@ -14,9 +17,7 @@ display.textContent = `${displayValue}`
 
 /* 2. equals button - calls operate */
     const eqlBtn = document.querySelector('#equals-button');
-    eqlBtn.addEventListener('click', function () { 
-        operate();
-    });
+    eqlBtn.addEventListener('click', function () {operate()});
 
 /* 3. operator buttons - sets operator variable value */
     const opBtns = document.querySelectorAll('.op-button');
@@ -33,15 +34,26 @@ display.textContent = `${displayValue}`
         });
     });
 
-/* 4. update display value on each button*/
-    const buttons = document.querySelectorAll('button');
+/* x. update display value on each button click*/
+/*     const buttons = document.querySelectorAll('button');
     buttons.forEach((button) => {
             button.addEventListener('click', () => {
             display.textContent = `${displayValue}`;
         });
-      });
+      }); */
 
-
+/* 4. calc-digits - build displayValue */
+    const digitBtns = document.querySelectorAll('div.calc-digits button');
+    digitBtns.forEach((digitBtn) => {
+        digitBtn.addEventListener('click', () => {
+            if (displayValue === 0 || displayValue === "0") {
+                displayValue = digitBtn.textContent;
+            } else {
+                displayValue += digitBtn.textContent
+            }
+            display.textContent = `${displayValue}`
+        })
+    })
 
 /* basic addition function to return the sum of two numbers */
 function add(a,b) {
@@ -63,8 +75,8 @@ function divide(a,b) {
     return a / b;
 }
 
-/* operate function - accepts an operator and two numbers
-calls a basic calculator function based on the operator */
+/* operate function - calls a basic calculator function based on the 
+selected operator */
 function operate() {
     const a = firstNumber;
     const b = secondNumber;
@@ -80,7 +92,10 @@ function operate() {
     } else if (operator === "/") {
         displayValue = divide(a,b);
     }
-    console.log(displayValue);
+    display.textContent = `${displayValue}`;
+
+    /* reset displayValue to zero*/
+    displayValue = 0;
     if(operator!=="") {removeSelected()};
     operator = "";
 }
@@ -91,8 +106,7 @@ function reset() {
     firstNumber = undefined;
     secondNumber = undefined;
     displayValue = 0;
-    console.log(displayValue);
-    /* remove selected operator highlight  */
+    display.textContent = `${displayValue}`;
 }
 
 function removeSelected () {
