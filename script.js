@@ -1,7 +1,9 @@
 let displayValue = 0;
 let operator = "";
 let firstNumber = 10;
-let secondNumber = 5;
+let secondNumber = 20;
+const display = document.getElementById('display');
+display.textContent = `${displayValue}`
 
 
 
@@ -16,7 +18,7 @@ let secondNumber = 5;
         operate();
     });
 
-/* .3 operator buttons - sets operator variable value */
+/* 3. operator buttons - sets operator variable value */
     const opBtns = document.querySelectorAll('.op-button');
 
     /* removes 'selected-op' class from prev selection
@@ -30,6 +32,16 @@ let secondNumber = 5;
             console.log(operator);
         });
     });
+
+/* 4. update display value on each button*/
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+            display.textContent = `${displayValue}`;
+        });
+      });
+
+
 
 /* basic addition function to return the sum of two numbers */
 function add(a,b) {
