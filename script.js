@@ -1,12 +1,13 @@
 /* variables */
 let displayValue = 0;
 let operator = "";
-let firstNumber = 10;
-let secondNumber = 20;
+let firstNumber = undefined;
+let secondNumber = undefined;
 
-/* set initial display */
-const display = document.getElementById('display');
-display.textContent = 0
+/* set initial mainDisplay */
+const mainDisplay = document.getElementById('main-display');
+const minorDisplay = document.getElementById('minor-display');
+mainDisplay.textContent = 0;
 
 
 
@@ -15,32 +16,37 @@ display.textContent = 0
     const clrBtn = document.querySelector('#clear-button');
     clrBtn.addEventListener('click',function () {reset()});
 
-/* 2. equals button - calls operate */
-    const eqlBtn = document.querySelector('#equals-button');
-    eqlBtn.addEventListener('click', function () {operate()});
-
-/* 3. operator buttons - sets operator variable value */
+/* 2. operator buttons - 
+        removes 'selected-op' class from prev selection
+        updates operator variable with new value, 
+        and adds 'selected-op' class to new selection
+        assign current display value to firstNumber,
+        update display*/
     const opBtns = document.querySelectorAll('.op-button');
 
-    /* removes 'selected-op' class from prev selection
-    updates operator variable with new value, 
-    and adds 'selected-op' class to new selection */
     opBtns.forEach((opBtn) => {
         opBtn.addEventListener('click', () => {  
-            if(operator!=="") {removeSelected()};               
+
+            if(operator !== "") {removeSelected()};                          
             operator = opBtn.textContent;
             opBtn.classList.add('selected-op');
             console.log(operator);
+
+            assignFirstNumber();
+            displayValue = 0;
+
+            mainDisplay.textContent = displayValue
+            minorDisplay.textContent = `${firstNumber} ${operator}`
         });
     });
 
-/* x. update display value on each button click*/
-/*     const buttons = document.querySelectorAll('button');
-    buttons.forEach((button) => {
-            button.addEventListener('click', () => {
-            display.textContent = `${displayValue}`;
-        });
-      }); */
+/* 3. equals button - assigns secndNumber variable and calls operate */
+    const eqlBtn = document.querySelector('#equals-button');
+    
+    eqlBtn.addEventListener('click', function () {
+        assignSecondNumber();
+        operate();
+    });
 
 /* 4. calc-digits - build displayValue */
     const digitBtns = document.querySelectorAll('div.calc-digits button');
@@ -51,7 +57,7 @@ display.textContent = 0
             } else {
                 displayValue += digitBtn.textContent
             }
-            display.textContent = `${displayValue}`
+            mainDisplay.textContent = `${displayValue}`
         })
     })
 
@@ -92,7 +98,7 @@ function operate() {
     } else if (operator === "/") {
         displayValue = divide(a,b);
     }
-    display.textContent = `${displayValue}`;
+    mainDisplay.textContent = `${displayValue}`;
 
     /* reset displayValue to zero*/
     displayValue = 0;
@@ -106,10 +112,21 @@ function reset() {
     firstNumber = undefined;
     secondNumber = undefined;
     displayValue = 0;
-    display.textContent = `${displayValue}`;
+    mainDisplay.textContent = `${displayValue}`;
+    minorDisplay.textContent = "";
 }
 
 function removeSelected () {
     const selectedBtn = document.querySelector('.selected-op')
         selectedBtn.classList.remove('selected-op');
     }
+
+function assignFirstNumber() {
+    firstNumber = Number(displayValue);
+    console.log(firstNumber)
+}
+
+function assignSecondNumber() {
+    secondNumber = Number(displayValue);
+    console.log(secondNumber)
+}
