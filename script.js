@@ -3,6 +3,7 @@ let displayValue = 0;
 let operator = "";
 let firstNumber = undefined;
 let secondNumber = undefined;
+let overwriteDV = 0;
 
 /* set initial mainDisplay */
 const mainDisplay = document.getElementById('main-display');
@@ -30,10 +31,10 @@ mainDisplay.textContent = 0;
             if(operator !== "") {removeSelected()};                          
             operator = opBtn.textContent;
             opBtn.classList.add('selected-op');
-            console.log(operator);
+            /* console.log(operator); */
 
             assignFirstNumber();
-            displayValue = 0;
+            overwriteDV = 1;
 
             mainDisplay.textContent = displayValue
             minorDisplay.textContent = `${firstNumber} ${operator}`
@@ -52,8 +53,9 @@ mainDisplay.textContent = 0;
     const digitBtns = document.querySelectorAll('div.calc-digits button');
     digitBtns.forEach((digitBtn) => {
         digitBtn.addEventListener('click', () => {
-            if (displayValue === 0 || displayValue === "0") {
+            if (displayValue === 0 || displayValue === "0" || overwriteDV === 1) {
                 displayValue = digitBtn.textContent;
+                overwriteDV = 0;
             } else {
                 displayValue += digitBtn.textContent
             }
@@ -99,11 +101,14 @@ function operate() {
         displayValue = divide(a,b);
     }
     mainDisplay.textContent = `${displayValue}`;
+    minorDisplay.textContent = `${firstNumber} ${operator} ${secondNumber}`;
 
-    /* reset displayValue to zero*/
-    displayValue = 0;
-    if(operator!=="") {removeSelected()};
-    operator = "";
+    /* set overwriteDV to 1*/
+    overwriteDV = 1;
+
+    /* reset operator to empty string */
+/*     if(operator!=="") {removeSelected()};
+    operator = ""; */
 }
 
 function reset() {
@@ -112,6 +117,7 @@ function reset() {
     firstNumber = undefined;
     secondNumber = undefined;
     displayValue = 0;
+    overwriteDV = 0;
     mainDisplay.textContent = `${displayValue}`;
     minorDisplay.textContent = "";
 }
@@ -123,10 +129,10 @@ function removeSelected () {
 
 function assignFirstNumber() {
     firstNumber = Number(displayValue);
-    console.log(firstNumber)
+/*     console.log(firstNumber) */
 }
 
 function assignSecondNumber() {
     secondNumber = Number(displayValue);
-    console.log(secondNumber)
+/*     console.log(secondNumber) */
 }
