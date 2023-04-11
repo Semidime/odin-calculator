@@ -4,6 +4,7 @@ let operator = "";
 let firstNumber = undefined;
 let secondNumber = undefined;
 let overwriteDV = 0;
+let toggleAssignNumber = 0;
 
 /* set initial mainDisplay */
 const mainDisplay = document.getElementById('main-display');
@@ -35,9 +36,10 @@ mainDisplay.textContent = 0;
 
             assignFirstNumber();
             overwriteDV = 1;
+            toggleAssignNumber = 0;
 
-            mainDisplay.textContent = displayValue
-            minorDisplay.textContent = `${firstNumber} ${operator}`
+            mainDisplay.textContent = displayValue;
+            minorDisplay.textContent = `${firstNumber} ${operator}`;
         });
     });
 
@@ -45,8 +47,13 @@ mainDisplay.textContent = 0;
     const eqlBtn = document.querySelector('#equals-button');
     
     eqlBtn.addEventListener('click', function () {
-        assignSecondNumber();
-        operate();
+        if (toggleAssignNumber === 0) {
+            assignSecondNumber();
+            operate();
+        } else {
+            assignFirstNumber();
+            operate();
+        }
     });
 
 /* 4. calc-digits - build displayValue */
@@ -105,6 +112,7 @@ function operate() {
 
     /* set overwriteDV to 1*/
     overwriteDV = 1;
+    toggleAssignNumber = 1;
 
     /* reset operator to empty string */
 /*     if(operator!=="") {removeSelected()};
@@ -118,6 +126,7 @@ function reset() {
     secondNumber = undefined;
     displayValue = 0;
     overwriteDV = 0;
+    toggleAssignNumber = 0;
     mainDisplay.textContent = `${displayValue}`;
     minorDisplay.textContent = "";
 }
