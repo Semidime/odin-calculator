@@ -25,26 +25,41 @@ mainDisplay.textContent = 0;
     opBtns.forEach((opBtn) => {
         opBtn.addEventListener('click', () => {  
 
-            /* remove formatting from prev. operator */
-            if(operator !== "") {removeSelected()};   
+            /* remove formatting from prev. operator and apply to new operator */
+            if(operator !== "") {removeSelected()};
+            opBtn.classList.add('selected-op');   
 
-            /* assign operator variable and apply formatting to indicate selection */
-            operator = opBtn.textContent;
-            opBtn.classList.add('selected-op');
+            if(firstNumber !== undefined && UserDVInput == 1) {
+                /* assign current DV to secondNumber variable and call operate BEFORE
+                updating operator variable */
+                assignSecondNumber();
+                operate(); 
+                
+                /* assign new operator variable */
+                operator = opBtn.textContent;
+                
+                /*  assign displayValue (i.e. result of operation) to firstNumber
+                and set tAN to 0*/
+                assignFirstNumber();
+                toggleAssignNumber = 0;
 
-            /* call assignFirstNumber to assign current displayValue to firstNumber */
-            assignFirstNumber();
-            
-            /*allow displayValue to be overwritten
-            set UserDVInput to 0
-            set toggleAssignNumber to zero */
-            overwriteDV = 1;
-            UserDVInput = 0;
-            toggleAssignNumber = 0;
+                /* update display */
+                mainDisplay.textContent = displayValue;
+                minorDisplay.textContent = `${firstNumber} ${operator}`;                
 
-            /* update display */
-            mainDisplay.textContent = displayValue;
-            minorDisplay.textContent = `${firstNumber} ${operator}`;
+            } else {
+                /* assign new operator variable */
+                operator = opBtn.textContent;
+                
+                /* assign current displayValue to firstNumber
+                and set tAN to 0 */
+                assignFirstNumber();
+                toggleAssignNumber = 0;
+                
+                /* update display */
+                mainDisplay.textContent = displayValue;
+                minorDisplay.textContent = `${firstNumber} ${operator}`;
+            }
         });
     });
 
@@ -151,10 +166,12 @@ function removeSelected () {
 
 function assignFirstNumber() {
     firstNumber = Number(displayValue);
-/*     console.log(firstNumber) */
+    overwriteDV = 1;
+    UserDVInput = 0;
 }
 
 function assignSecondNumber() {
     secondNumber = Number(displayValue);
-/*     console.log(secondNumber) */
+    overwriteDV = 1;
+    UserDVInput = 0;
 }
