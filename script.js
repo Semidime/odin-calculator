@@ -5,6 +5,7 @@ let firstNumber = undefined;
 let secondNumber = undefined;
 let overwriteDV = 1;
 let toggleAssignNumber = 0;
+let UserDVInput = 0;
 
 /* set initial mainDisplay */
 const mainDisplay = document.getElementById('main-display');
@@ -18,12 +19,7 @@ mainDisplay.textContent = 0;
     const clrBtn = document.querySelector('#clear-button');
     clrBtn.addEventListener('click',function () {reset()});
 
-/* 2. operator buttons - 
-        removes 'selected-op' class from prev selection
-        updates operator variable with new value, 
-        and adds 'selected-op' class to new selection
-        assign current display value to firstNumber,
-        update display*/
+/* 2. operator buttons*/
     const opBtns = document.querySelectorAll('.op-button');
 
     opBtns.forEach((opBtn) => {
@@ -40,8 +36,10 @@ mainDisplay.textContent = 0;
             assignFirstNumber();
             
             /*allow displayValue to be overwritten
+            set UserDVInput to 0
             set toggleAssignNumber to zero */
             overwriteDV = 1;
+            UserDVInput = 0;
             toggleAssignNumber = 0;
 
             /* update display */
@@ -50,7 +48,23 @@ mainDisplay.textContent = 0;
         });
     });
 
-/* 3. equals button 
+/* 3. calc-digits - build displayValue */
+const digitBtns = document.querySelectorAll('div.calc-digits button');
+
+digitBtns.forEach((digitBtn) => {
+    digitBtn.addEventListener('click', () => {
+        if (overwriteDV === 1) {
+            displayValue = digitBtn.textContent;
+            overwriteDV = 0;
+            UserDVInput = 1;
+        } else {
+            displayValue += digitBtn.textContent
+        }
+        mainDisplay.textContent = `${displayValue}`
+    })
+})
+
+/* 4. equals button 
 - assigns secondNumber variable (if toggleAssignNumber is 0) and calls operate()
 - assigns firstNumber variable (if toggleAssignNumber is 1) and calls operate() */
     const eqlBtn = document.querySelector('#equals-button');
@@ -64,20 +78,6 @@ mainDisplay.textContent = 0;
             operate();
         }
     });
-
-/* 4. calc-digits - build displayValue */
-    const digitBtns = document.querySelectorAll('div.calc-digits button');
-    digitBtns.forEach((digitBtn) => {
-        digitBtn.addEventListener('click', () => {
-            if (/* displayValue === 0 || displayValue === "0" ||  */overwriteDV === 1) {
-                displayValue = digitBtn.textContent;
-                overwriteDV = 0;
-            } else {
-                displayValue += digitBtn.textContent
-            }
-            mainDisplay.textContent = `${displayValue}`
-        })
-    })
 
 /* basic addition function to return the sum of two numbers */
 function add(a,b) {
@@ -119,8 +119,10 @@ function operate() {
     mainDisplay.textContent = `${displayValue}`;
     minorDisplay.textContent = `${firstNumber} ${operator} ${secondNumber} =`;
 
-    /* set overwriteDV to 1*/
+    /* set overwriteDV to 1
+    set UserDVInput to 0*/
     overwriteDV = 1;
+    UserDVInput = 0;
     /* set toggleAssignNumber to 1*/
     toggleAssignNumber = 1;
 
@@ -136,6 +138,7 @@ function reset() {
     secondNumber = undefined;
     displayValue = 0;
     overwriteDV = 1;
+    UserDVInput = 0;
     toggleAssignNumber = 0;
     mainDisplay.textContent = `${displayValue}`;
     minorDisplay.textContent = "";
