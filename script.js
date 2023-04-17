@@ -3,7 +3,7 @@ let displayValue = 0;
 let operator = "";
 let firstNumber = undefined;
 let secondNumber = undefined;
-let overwriteDV = 0;
+let overwriteDV = 1;
 let toggleAssignNumber = 0;
 
 /* set initial mainDisplay */
@@ -29,21 +29,30 @@ mainDisplay.textContent = 0;
     opBtns.forEach((opBtn) => {
         opBtn.addEventListener('click', () => {  
 
-            if(operator !== "") {removeSelected()};                          
+            /* remove formatting from prev. operator */
+            if(operator !== "") {removeSelected()};   
+
+            /* assign operator variable and apply formatting to indicate selection */
             operator = opBtn.textContent;
             opBtn.classList.add('selected-op');
-            /* console.log(operator); */
 
+            /* call assignFirstNumber to assign current displayValue to firstNumber */
             assignFirstNumber();
+            
+            /*allow displayValue to be overwritten
+            set toggleAssignNumber to zero */
             overwriteDV = 1;
             toggleAssignNumber = 0;
 
+            /* update display */
             mainDisplay.textContent = displayValue;
             minorDisplay.textContent = `${firstNumber} ${operator}`;
         });
     });
 
-/* 3. equals button - assigns secndNumber variable and calls operate */
+/* 3. equals button 
+- assigns secondNumber variable (if toggleAssignNumber is 0) and calls operate()
+- assigns firstNumber variable (if toggleAssignNumber is 1) and calls operate() */
     const eqlBtn = document.querySelector('#equals-button');
     
     eqlBtn.addEventListener('click', function () {
@@ -60,7 +69,7 @@ mainDisplay.textContent = 0;
     const digitBtns = document.querySelectorAll('div.calc-digits button');
     digitBtns.forEach((digitBtn) => {
         digitBtn.addEventListener('click', () => {
-            if (displayValue === 0 || displayValue === "0" || overwriteDV === 1) {
+            if (/* displayValue === 0 || displayValue === "0" ||  */overwriteDV === 1) {
                 displayValue = digitBtn.textContent;
                 overwriteDV = 0;
             } else {
@@ -108,10 +117,11 @@ function operate() {
         displayValue = divide(a,b);
     }
     mainDisplay.textContent = `${displayValue}`;
-    minorDisplay.textContent = `${firstNumber} ${operator} ${secondNumber}`;
+    minorDisplay.textContent = `${firstNumber} ${operator} ${secondNumber} =`;
 
     /* set overwriteDV to 1*/
     overwriteDV = 1;
+    /* set toggleAssignNumber to 1*/
     toggleAssignNumber = 1;
 
     /* reset operator to empty string */
@@ -125,7 +135,7 @@ function reset() {
     firstNumber = undefined;
     secondNumber = undefined;
     displayValue = 0;
-    overwriteDV = 0;
+    overwriteDV = 1;
     toggleAssignNumber = 0;
     mainDisplay.textContent = `${displayValue}`;
     minorDisplay.textContent = "";
