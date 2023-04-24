@@ -72,6 +72,8 @@ digitBtns.forEach((digitBtn) => {
             displayValue = digitBtn.textContent;
             overwriteDV = 0;
             UserDVInput = 1;
+        } else if (digitBtn.textContent === "." && displayValue.search(/\./) != -1){
+            return;
         } else {
             displayValue += digitBtn.textContent
         }
