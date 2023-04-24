@@ -1,5 +1,5 @@
 /* variables */
-let displayValue = 0;
+let displayValue = "0";
 let operator = "";
 let firstNumber = undefined;
 let secondNumber = undefined;
@@ -68,7 +68,13 @@ const digitBtns = document.querySelectorAll('div.calc-digits button');
 
 digitBtns.forEach((digitBtn) => {
     digitBtn.addEventListener('click', () => {
-        if (overwriteDV === 1) {
+        if (overwriteDV === 1 && digitBtn.textContent === ".") {
+            displayValue = "0.";
+            overwriteDV = 0;
+            UserDVInput = 1;
+        } else if (digitBtn.textContent === "+/-") {
+            displayValue = `${displayValue * -1}`;          
+        } else if (overwriteDV === 1) {
             displayValue = digitBtn.textContent;
             overwriteDV = 0;
             UserDVInput = 1;
