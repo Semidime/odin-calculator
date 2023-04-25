@@ -69,11 +69,10 @@ const digitBtns = document.querySelectorAll('div.calc-digits button');
 digitBtns.forEach((digitBtn) => {
     digitBtn.addEventListener('click', () => {
         if (overwriteDV === 1 && digitBtn.textContent === ".") {
-            displayValue = displayValue + ".";
+            if (displayValue.search(/\./) === -1) {displayValue = displayValue + "."};
             overwriteDV = 0;
             UserDVInput = 1;
         } else if (digitBtn.textContent === "+/-") {
-/*             displayValue = `${displayValue * -1}`; */
             if (displayValue.search(/\-/) === 0) {
                 displayValue = displayValue.slice(1);
             } else {
@@ -116,7 +115,7 @@ document.addEventListener('keydown', (event) => {
 /*  build displayValue */
     if (kbdDigits.includes(event.key)) {
         if (overwriteDV === 1 && event.key === ".") {
-            displayValue = displayValue + ".";
+            if (displayValue.search(/\./) === -1) {displayValue = displayValue + "."};
             overwriteDV = 0;
             UserDVInput = 1;
         } else if (overwriteDV === 1) {
