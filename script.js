@@ -83,10 +83,10 @@ digitBtns.forEach((digitBtn) => {
             displayValue = digitBtn.textContent;
             overwriteDV = 0;
             UserDVInput = 1;
-        } else if (digitBtn.textContent === "." && displayValue.search(/\./) != -1){
+        } else if (digitBtn.textContent === "." && displayValue.search(/\./) != -1) {
             return;
         } else {
-            displayValue += digitBtn.textContent
+            displayValue += digitBtn.textContent;
         }
         mainDisplay.textContent = `${displayValue}`
     })
@@ -106,6 +106,43 @@ digitBtns.forEach((digitBtn) => {
             operate();
         }
     });
+
+
+/* 5. keydown listeners (keyboard inputs)*/
+const kbdDigits = ["0","1","2","3","4","5","6","7","8","9","."];
+const kbdOperators = ["+","-","*","/"]
+let testKbdVal = "";
+
+document.addEventListener('keydown', (event) => {    
+/*  build displayValue */
+    if (kbdDigits.includes(event.key)) {
+        if (overwriteDV === 1 && event.key === ".") {
+            displayValue = displayValue + ".";
+            overwriteDV = 0;
+            UserDVInput = 1;
+        } else if (overwriteDV === 1) {
+            displayValue = event.key;
+            overwriteDV = 0;
+            UserDVInput = 1;
+        } else if (event.key === "." && displayValue.search(/\./) != -1) {
+            return;
+        } else {
+            displayValue += event.key;
+        }
+        mainDisplay.textContent = `${displayValue}`
+    } else if (kbdOperators.includes(event.key)) {
+/* operator keys */        
+        testKbdVal = event.key;
+        console.log(testKbdVal);
+        console.log(typeof testKbdVal);
+/*     } else if {  */     
+    
+    } else {
+        return
+    };
+});
+    
+
 
 /* basic addition function to return the sum of two numbers */
 function add(a,b) {
