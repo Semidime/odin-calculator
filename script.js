@@ -69,11 +69,16 @@ const digitBtns = document.querySelectorAll('div.calc-digits button');
 digitBtns.forEach((digitBtn) => {
     digitBtn.addEventListener('click', () => {
         if (overwriteDV === 1 && digitBtn.textContent === ".") {
-            displayValue = "0.";
+            displayValue = displayValue + ".";
             overwriteDV = 0;
             UserDVInput = 1;
         } else if (digitBtn.textContent === "+/-") {
-            displayValue = `${displayValue * -1}`;          
+/*             displayValue = `${displayValue * -1}`; */
+            if (displayValue.search(/\-/) === 0) {
+                displayValue = displayValue.slice(1);
+            } else {
+                displayValue = "-" + displayValue; 
+            }         
         } else if (overwriteDV === 1) {
             displayValue = digitBtn.textContent;
             overwriteDV = 0;
@@ -131,13 +136,13 @@ function operate() {
     console.log(operator);
     console.log(b);
     if (operator === "+") {
-        displayValue = add(a,b);
+        displayValue = `${add(a,b)}`;
     } else if (operator === "-") {
-        displayValue = subtract(a,b);
+        displayValue = `${subtract(a,b)}`;
     } else if (operator === "*") {
-        displayValue = multiply(a,b);                      
+        displayValue = `${multiply(a,b)}`;                      
     } else if (operator === "/") {
-        displayValue = divide(a,b);
+        displayValue = `${divide(a,b)}`;
     }
     mainDisplay.textContent = `${displayValue}`;
     minorDisplay.textContent = `${firstNumber} ${operator} ${secondNumber} =`;
@@ -159,7 +164,7 @@ function reset() {
     operator = "";
     firstNumber = undefined;
     secondNumber = undefined;
-    displayValue = 0;
+    displayValue = "0";
     overwriteDV = 1;
     UserDVInput = 0;
     toggleAssignNumber = 0;
