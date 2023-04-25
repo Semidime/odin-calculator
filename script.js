@@ -15,11 +15,11 @@ mainDisplay.textContent = 0;
 
 
 /* event listeners */
-/* 1. clear button - calls reset function*/
+/* 1. clear button - mouse input.  Calls reset function*/
     const clrBtn = document.querySelector('#clear-button');
     clrBtn.addEventListener('click',function () {reset()});
 
-/* 2. operator buttons*/
+/* 2. operator buttons - mouse input*/
     const opBtns = document.querySelectorAll('.op-button');
 
     opBtns.forEach((opBtn) => {
@@ -92,7 +92,7 @@ digitBtns.forEach((digitBtn) => {
     })
 })
 
-/* 4. equals button 
+/* 4. equals button - mouse input 
 - assigns secondNumber variable (if toggleAssignNumber is 0) and calls operate()
 - assigns firstNumber variable (if toggleAssignNumber is 1) and calls operate() */
     const eqlBtn = document.querySelector('#equals-button');
@@ -111,7 +111,6 @@ digitBtns.forEach((digitBtn) => {
 /* 5. keydown listeners (keyboard inputs)*/
 const kbdDigits = ["0","1","2","3","4","5","6","7","8","9","."];
 const kbdOperators = ["+","-","*","/"]
-let testKbdVal = "";
 
 document.addEventListener('keydown', (event) => {    
 /*  build displayValue */
@@ -132,12 +131,56 @@ document.addEventListener('keydown', (event) => {
         mainDisplay.textContent = `${displayValue}`
     } else if (kbdOperators.includes(event.key)) {
 /* operator keys */        
-        testKbdVal = event.key;
-        console.log(testKbdVal);
-        console.log(typeof testKbdVal);
-/*     } else if {  */     
-    
-    } else {
+
+        /* remove formatting from prev. operator and apply to new operator */
+        if(operator !== "") {removeSelected()};
+        if (event.key === "+") {document.getElementById("add").classList.add('selected-op')};
+        if (event.key === "-") {document.getElementById("subtract").classList.add('selected-op')};
+        if (event.key === "*") {document.getElementById("multiply").classList.add('selected-op')};
+        if (event.key === "/") {document.getElementById("divide").classList.add('selected-op')};
+
+        if(firstNumber !== undefined && UserDVInput == 1) {
+            /* assign current DV to secondNumber variable and call operate BEFORE
+            updating operator variable */
+            assignSecondNumber();
+            operate(); 
+            
+            /* assign new operator variable */
+            operator = event.key;
+            
+            /*  assign displayValue (i.e. result of operation) to firstNumber
+            and set tAN to 0*/
+            assignFirstNumber();
+            toggleAssignNumber = 0;
+
+            /* update display */
+            mainDisplay.textContent = displayValue;
+            minorDisplay.textContent = `${firstNumber} ${operator}`;                
+
+        } else {
+            /* assign new operator variable */
+            operator = event.key;
+            
+            /* assign current displayValue to firstNumber
+            and set tAN to 0 */
+            assignFirstNumber();
+            toggleAssignNumber = 0;
+            
+            /* update display */
+            mainDisplay.textContent = displayValue;
+            minorDisplay.textContent = `${firstNumber} ${operator}`;
+        }
+    } else if (event.key === "Enter") {        
+        if (toggleAssignNumber === 0) {
+            assignSecondNumber();
+            operate();
+        } else {
+            assignFirstNumber();
+            operate();
+        }     
+    } else if (event.key === "Escape") {        
+        reset();
+    } else {   
         return
     };
 });
@@ -191,9 +234,6 @@ function operate() {
     /* set toggleAssignNumber to 1*/
     toggleAssignNumber = 1;
 
-    /* reset operator to empty string */
-/*     if(operator!=="") {removeSelected()};
-    operator = ""; */
 }
 
 function reset() {
@@ -210,9 +250,13 @@ function reset() {
 }
 
 function removeSelected () {
-    const selectedBtn = document.querySelector('.selected-op')
+    if (document.getElementsByClassName('selected-op').length > 0) {
+        const selectedBtn = document.querySelector('.selected-op')
         selectedBtn.classList.remove('selected-op');
+    } else {
+        return;
     }
+}
 
 function assignFirstNumber() {
     firstNumber = Number(displayValue);
