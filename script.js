@@ -63,33 +63,39 @@ mainDisplay.textContent = 0;
         });
     });
 
-/* 3. calc-digits - build displayValue */
+/* 3. calc-digits - build displayValue. Mouse input*/
 const digitBtns = document.querySelectorAll('div.calc-digits button');
 
 digitBtns.forEach((digitBtn) => {
-    digitBtn.addEventListener('click', () => {
-        if (overwriteDV === 1 && digitBtn.textContent === ".") {
+    digitBtn.addEventListener('mousedown', function(){ buildDisplayValue(digitBtn.textContent) })
+}) 
+
+function buildDisplayValue(digit) {
+
+        if (overwriteDV === 1 && digit === ".") {
             displayValue = "0.";
             overwriteDV = 0;
             UserDVInput = 1;
-        } else if (digitBtn.textContent === "+/-") {
+            console.log(displayValue);
+        } else if (digit === "+/-") {
             if (displayValue.search(/\-/) === 0) {
                 displayValue = displayValue.slice(1);
             } else {
                 displayValue = "-" + displayValue; 
             }         
         } else if (overwriteDV === 1) {
-            displayValue = digitBtn.textContent;
+            displayValue = digit;
             overwriteDV = 0;
             UserDVInput = 1;
-        } else if (digitBtn.textContent === "." && displayValue.search(/\./) != -1) {
+            console.log(displayValue);
+        } else if (digit === "." && displayValue.search(/\./) != -1) {
             return;
         } else {
-            displayValue += digitBtn.textContent;
+            displayValue += digit;
+            console.log(displayValue);
         }
         mainDisplay.textContent = `${displayValue}`
-    })
-})
+}
 
 /* 4. equals button - mouse input 
 - assigns secondNumber variable (if toggleAssignNumber is 0) and calls operate()
@@ -114,20 +120,24 @@ const kbdOperators = ["+","-","*","/"]
 document.addEventListener('keydown', (event) => {    
 /*  build displayValue */
     if (kbdDigits.includes(event.key)) {
-        if (overwriteDV === 1 && event.key === ".") {
+        buildDisplayValue(event.key);
+/*         if (overwriteDV === 1 && event.key === ".") {
             displayValue = "0.";
             overwriteDV = 0;
             UserDVInput = 1;
+            console.log(displayValue);
         } else if (overwriteDV === 1) {
             displayValue = event.key;
             overwriteDV = 0;
             UserDVInput = 1;
+            console.log(displayValue);
         } else if (event.key === "." && displayValue.search(/\./) != -1) {
             return;
         } else {
             displayValue += event.key;
+            console.log(displayValue);
         }
-        mainDisplay.textContent = `${displayValue}`
+        mainDisplay.textContent = `${displayValue}` */
     } else if (kbdOperators.includes(event.key)) {
 /* operator keys */        
 
@@ -223,6 +233,7 @@ function operate() {
     } else if (operator === "/") {
         displayValue = `${divide(a,b)}`;
     }
+    console.log(displayValue);
     mainDisplay.textContent = `${displayValue}`;
     minorDisplay.textContent = `${firstNumber} ${operator} ${secondNumber} =`;
 
