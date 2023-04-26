@@ -15,7 +15,7 @@ mainDisplay.textContent = 0;
 /* event listeners */
 /* 1. clear button - mouse input.  Calls reset function*/
     const clrBtn = document.querySelector('#clear-button');
-    clrBtn.addEventListener('click',function () {reset()});
+    clrBtn.addEventListener('mousedown',function () {reset()});
 
 /* 2. operator buttons - mouse input*/
     const opBtns = document.querySelectorAll('.op-button');
@@ -38,7 +38,7 @@ mainDisplay.textContent = 0;
 - assigns firstNumber variable (if toggleAssignNumber is 1) and calls operate() */
     const eqlBtn = document.querySelector('#equals-button');
     
-    eqlBtn.addEventListener('click', function () {
+    eqlBtn.addEventListener('mousedown', function () {
         if (toggleAssignNumber === 0) {
             assignSecondNumber();
             operate();
