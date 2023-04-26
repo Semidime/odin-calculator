@@ -1,4 +1,4 @@
-/* variables */
+/* global variables */
 let displayValue = "0";
 let operator = "";
 let firstNumber = undefined;
@@ -12,8 +12,6 @@ const mainDisplay = document.getElementById('main-display');
 const minorDisplay = document.getElementById('minor-display');
 mainDisplay.textContent = 0;
 
-
-
 /* event listeners */
 /* 1. clear button - mouse input.  Calls reset function*/
     const clrBtn = document.querySelector('#clear-button');
@@ -23,79 +21,17 @@ mainDisplay.textContent = 0;
     const opBtns = document.querySelectorAll('.op-button');
 
     opBtns.forEach((opBtn) => {
-        opBtn.addEventListener('click', () => {  
+        opBtn.addEventListener('mousedown',function () {assignOperator(opBtn.textContent)})
+    }) 
 
-            /* remove formatting from prev. operator and apply to new operator */
-            if(operator !== "") {removeSelected()};
-            opBtn.classList.add('selected-op');   
-
-            if(firstNumber !== undefined && UserDVInput == 1) {
-                /* assign current DV to secondNumber variable and call operate BEFORE
-                updating operator variable */
-                assignSecondNumber();
-                operate(); 
-                
-                /* assign new operator variable */
-                operator = opBtn.textContent;
-                
-                /*  assign displayValue (i.e. result of operation) to firstNumber
-                and set tAN to 0*/
-                assignFirstNumber();
-                toggleAssignNumber = 0;
-
-                /* update display */
-                mainDisplay.textContent = displayValue;
-                minorDisplay.textContent = `${firstNumber} ${operator}`;                
-
-            } else {
-                /* assign new operator variable */
-                operator = opBtn.textContent;
-                
-                /* assign current displayValue to firstNumber
-                and set tAN to 0 */
-                assignFirstNumber();
-                toggleAssignNumber = 0;
-                
-                /* update display */
-                mainDisplay.textContent = displayValue;
-                minorDisplay.textContent = `${firstNumber} ${operator}`;
-            }
-        });
-    });
 
 /* 3. calc-digits - build displayValue. Mouse input*/
-const digitBtns = document.querySelectorAll('div.calc-digits button');
+    const digitBtns = document.querySelectorAll('div.calc-digits button');
 
-digitBtns.forEach((digitBtn) => {
-    digitBtn.addEventListener('mousedown', function(){ buildDisplayValue(digitBtn.textContent) })
-}) 
+    digitBtns.forEach((digitBtn) => {
+        digitBtn.addEventListener('mousedown',function () {buildDisplayValue(digitBtn.textContent)})
+    }) 
 
-function buildDisplayValue(digit) {
-
-        if (overwriteDV === 1 && digit === ".") {
-            displayValue = "0.";
-            overwriteDV = 0;
-            UserDVInput = 1;
-            console.log(displayValue);
-        } else if (digit === "+/-") {
-            if (displayValue.search(/\-/) === 0) {
-                displayValue = displayValue.slice(1);
-            } else {
-                displayValue = "-" + displayValue; 
-            }         
-        } else if (overwriteDV === 1) {
-            displayValue = digit;
-            overwriteDV = 0;
-            UserDVInput = 1;
-            console.log(displayValue);
-        } else if (digit === "." && displayValue.search(/\./) != -1) {
-            return;
-        } else {
-            displayValue += digit;
-            console.log(displayValue);
-        }
-        mainDisplay.textContent = `${displayValue}`
-}
 
 /* 4. equals button - mouse input 
 - assigns secondNumber variable (if toggleAssignNumber is 0) and calls operate()
@@ -114,85 +50,37 @@ function buildDisplayValue(digit) {
 
 
 /* 5. keydown listeners (keyboard inputs)*/
-const kbdDigits = ["0","1","2","3","4","5","6","7","8","9","."];
-const kbdOperators = ["+","-","*","/"]
+    const kbdDigits = ["0","1","2","3","4","5","6","7","8","9","."];
+    const kbdOperators = ["+","-","*","/"];
 
-document.addEventListener('keydown', (event) => {    
-/*  build displayValue */
-    if (kbdDigits.includes(event.key)) {
-        buildDisplayValue(event.key);
-/*         if (overwriteDV === 1 && event.key === ".") {
-            displayValue = "0.";
-            overwriteDV = 0;
-            UserDVInput = 1;
-            console.log(displayValue);
-        } else if (overwriteDV === 1) {
-            displayValue = event.key;
-            overwriteDV = 0;
-            UserDVInput = 1;
-            console.log(displayValue);
-        } else if (event.key === "." && displayValue.search(/\./) != -1) {
-            return;
-        } else {
-            displayValue += event.key;
-            console.log(displayValue);
-        }
-        mainDisplay.textContent = `${displayValue}` */
-    } else if (kbdOperators.includes(event.key)) {
-/* operator keys */        
+    document.addEventListener('keydown', (event) => {    
+    /*  build displayValue */
+        if (kbdDigits.includes(event.key)) {
+            buildDisplayValue(event.key);
 
-        /* remove formatting from prev. operator and apply to new operator */
-        if(operator !== "") {removeSelected()};
-        if (event.key === "+") {document.getElementById("add").classList.add('selected-op')};
-        if (event.key === "-") {document.getElementById("subtract").classList.add('selected-op')};
-        if (event.key === "*") {document.getElementById("multiply").classList.add('selected-op')};
-        if (event.key === "/") {document.getElementById("divide").classList.add('selected-op')};
+    /* operator keys */
+        } else if (kbdOperators.includes(event.key)) {   
+            assignOperator(event.key);    
 
-        if(firstNumber !== undefined && UserDVInput == 1) {
-            /* assign current DV to secondNumber variable and call operate BEFORE
-            updating operator variable */
-            assignSecondNumber();
-            operate(); 
+    /* Equals (enter key) 
+    - assigns secondNumber variable (if toggleAssignNumber is 0) and calls operate()
+    - assigns firstNumber variable (if toggleAssignNumber is 1) and calls operate()  */
+        } else if (event.key === "Enter") {        
+            if (toggleAssignNumber === 0) {
+                assignSecondNumber();
+                operate();
+            } else {
+                assignFirstNumber();
+                operate();
+            }  
             
-            /* assign new operator variable */
-            operator = event.key;
-            
-            /*  assign displayValue (i.e. result of operation) to firstNumber
-            and set tAN to 0*/
-            assignFirstNumber();
-            toggleAssignNumber = 0;
-
-            /* update display */
-            mainDisplay.textContent = displayValue;
-            minorDisplay.textContent = `${firstNumber} ${operator}`;                
-
-        } else {
-            /* assign new operator variable */
-            operator = event.key;
-            
-            /* assign current displayValue to firstNumber
-            and set tAN to 0 */
-            assignFirstNumber();
-            toggleAssignNumber = 0;
-            
-            /* update display */
-            mainDisplay.textContent = displayValue;
-            minorDisplay.textContent = `${firstNumber} ${operator}`;
-        }
-    } else if (event.key === "Enter") {        
-        if (toggleAssignNumber === 0) {
-            assignSecondNumber();
-            operate();
-        } else {
-            assignFirstNumber();
-            operate();
-        }     
-    } else if (event.key === "Escape") {        
-        reset();
-    } else {   
-        return
-    };
-});
+    /* Clear (Esc key) */
+        } else if (event.key === "Escape") {        
+            reset();
+        } else {   
+            return
+        };
+    });
     
 
 
@@ -278,4 +166,73 @@ function assignSecondNumber() {
     secondNumber = Number(displayValue);
     overwriteDV = 1;
     UserDVInput = 0;
+}
+
+function buildDisplayValue(digit) {
+
+    if (overwriteDV === 1 && digit === ".") {
+        displayValue = "0.";
+        overwriteDV = 0;
+        UserDVInput = 1;
+        console.log(displayValue);
+    } else if (digit === "+/-") {
+        if (displayValue.search(/\-/) === 0) {
+            displayValue = displayValue.slice(1);
+        } else {
+            displayValue = "-" + displayValue; 
+        }         
+    } else if (overwriteDV === 1) {
+        displayValue = digit;
+        overwriteDV = 0;
+        UserDVInput = 1;
+        console.log(displayValue);
+    } else if (digit === "." && displayValue.search(/\./) != -1) {
+        return;
+    } else {
+        displayValue += digit;
+        console.log(displayValue);
+    }
+    mainDisplay.textContent = `${displayValue}`
+}
+
+function assignOperator(opSymbol) {
+
+    /* remove formatting from prev. operator and apply to new operator */
+    if (operator !== "") {removeSelected()};
+    if (opSymbol === "+") {document.getElementById("add").classList.add('selected-op')};
+    if (opSymbol === "-") {document.getElementById("subtract").classList.add('selected-op')};
+    if (opSymbol === "*") {document.getElementById("multiply").classList.add('selected-op')};
+    if (opSymbol === "/") {document.getElementById("divide").classList.add('selected-op')};
+
+    if(firstNumber !== undefined && UserDVInput == 1) {
+       /* assign current DV to secondNumber variable and call operate BEFORE
+       updating operator variable */
+       assignSecondNumber();
+       operate(); 
+       
+       /* assign new operator variable */
+       operator = opSymbol;
+       
+       /*  assign displayValue (i.e. result of operation) to firstNumber
+       and set tAN to 0*/
+       assignFirstNumber();
+       toggleAssignNumber = 0;
+
+       /* update display */
+       mainDisplay.textContent = displayValue;
+       minorDisplay.textContent = `${firstNumber} ${operator}`;                
+
+   } else {
+       /* assign new operator variable */
+       operator = opSymbol;
+       
+       /* assign current displayValue to firstNumber
+       and set tAN to 0 */
+       assignFirstNumber();
+       toggleAssignNumber = 0;
+       
+       /* update display */
+       mainDisplay.textContent = displayValue;
+       minorDisplay.textContent = `${firstNumber} ${operator}`;
+   }
 }
