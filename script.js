@@ -54,6 +54,7 @@ mainDisplay.textContent = 0;
     const kbdOperators = ["+","-","*","/"];
 
     document.addEventListener('keydown', (event) => {    
+    
     /*  build displayValue */
         if (kbdDigits.includes(event.key)) {
             buildDisplayValue(event.key);
@@ -112,7 +113,10 @@ function operate() {
     console.log(a);
     console.log(operator);
     console.log(b);
-    if (operator === "+") {
+
+    if (operator === "") {
+        return;
+    } else if (operator === "+") {
         displayValue = `${add(a,b)}`;
     } else if (operator === "-") {
         displayValue = `${subtract(a,b)}`;
@@ -131,7 +135,6 @@ function operate() {
     UserDVInput = 0;
     /* set toggleAssignNumber to 1*/
     toggleAssignNumber = 1;
-
 }
 
 function reset() {
@@ -147,7 +150,7 @@ function reset() {
     minorDisplay.textContent = "";
 }
 
-function removeSelected () {
+function removeSelected() {
     if (document.getElementsByClassName('selected-op').length > 0) {
         const selectedBtn = document.querySelector('.selected-op')
         selectedBtn.classList.remove('selected-op');
@@ -169,34 +172,32 @@ function assignSecondNumber() {
 }
 
 function buildDisplayValue(digit) {
-
     if (overwriteDV === 1 && digit === ".") {
         displayValue = "0.";
         overwriteDV = 0;
         UserDVInput = 1;
-        console.log(displayValue);
+
     } else if (digit === "+/-") {
         if (displayValue.search(/\-/) === 0) {
             displayValue = displayValue.slice(1);
         } else {
             displayValue = "-" + displayValue; 
-        }         
+        } 
+
     } else if (overwriteDV === 1) {
         displayValue = digit;
         overwriteDV = 0;
         UserDVInput = 1;
-        console.log(displayValue);
+
     } else if (digit === "." && displayValue.search(/\./) != -1) {
         return;
     } else {
         displayValue += digit;
-        console.log(displayValue);
     }
     mainDisplay.textContent = `${displayValue}`
 }
 
 function assignOperator(opSymbol) {
-
     /* remove formatting from prev. operator and apply to new operator */
     if (operator !== "") {removeSelected()};
     if (opSymbol === "+") {document.getElementById("add").classList.add('selected-op')};
