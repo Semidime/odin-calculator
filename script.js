@@ -122,6 +122,10 @@ function operate() {
         displayValue = `${subtract(a,b)}`;
     } else if (operator === "*") {
         displayValue = `${multiply(a,b)}`;                      
+    } else if (operator === "/" && b === 0) {
+        minorDisplay.textContent = `${firstNumber} ${operator} ${secondNumber} =`
+        mainDisplay.textContent = "I'm sorry Dave, I'm afraid I can't do that."
+        return;
     } else if (operator === "/") {
         displayValue = `${divide(a,b)}`;
     }
