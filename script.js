@@ -48,6 +48,10 @@ mainDisplay.textContent = 0;
         const clrBtn = document.querySelector('#clear-button');
         clrBtn.addEventListener('mousedown',function () {reset()});
 
+    /* 5. Delete button */
+        const delBtn = document.querySelector('#backspace-button');
+        delBtn.addEventListener('mousedown',function () {backspace()})
+
 /* Keyboard inputs */
     const kbdDigits = ["0","1","2","3","4","5","6","7","8","9","."];
     const kbdOperators = ["+","-","*","/"];
@@ -77,6 +81,10 @@ mainDisplay.textContent = 0;
         } else if (event.key === "Escape") {        
             reset();
     
+    /* delete (Backspace OR Delete key) */
+        } else if (event.key === "Backspace" || event.key === "Delete" ) {
+            backspace();
+        
             /* exit if any other key pressed */    
         } else {   
             return
@@ -111,6 +119,25 @@ function buildDisplayValue(digit) {
     }
     mainDisplay.textContent = `${displayValue}`
 }
+
+/* function to allow user to delete last displayValue input */
+function backspace() {
+    if (displayValue.length == 2 && displayValue.charAt(0) === "-") {
+        displayValue = "0";
+        overwriteDV = 1;
+        UserDVInput = 0;
+
+    } else if (displayValue.length > 1 && UserDVInput == 1) {
+        displayValue = displayValue.slice(0,-1);
+
+    } else if (displayValue.length == 1 && UserDVInput == 1) {
+        displayValue = "0";
+        overwriteDV = 1;
+        UserDVInput = 0;
+    }
+
+    mainDisplay.textContent = `${displayValue}`
+ }
 
 /* function to assign selected operator  
 call functions to assign values to firstNumber and secondNumber variables
