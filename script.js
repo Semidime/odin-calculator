@@ -115,6 +115,10 @@ function buildDisplayValue(digit) {
 
     } else if (digit === "." && displayValue.search(/\./) != -1) {
         return;
+
+	} else if (displayValue.replaceAll(/[-.]/g,"").length >= 16) {
+        return;
+        
     } else {
         displayValue += digit;
     }
