@@ -173,7 +173,8 @@ function assignOperator(opSymbol) {
 
        /* update display */
        mainDisplay.textContent = `${formatDisplay(displayValue)}`;
-       minorDisplay1.textContent = `${formatDisplay(firstNumber)} ${operator}`;                
+       minorDisplay1.textContent = `${formatDisplay(firstNumber)} ${operator}`;
+       minorDisplay2.textContent = "";                
 
    } else {
        /* assign new operator variable */
@@ -187,6 +188,7 @@ function assignOperator(opSymbol) {
        /* update display */
        mainDisplay.textContent = `${formatDisplay(displayValue)}`;
        minorDisplay1.textContent = `${formatDisplay(firstNumber)} ${operator}`;
+       minorDisplay2.textContent = "";   
    }
 }
 
