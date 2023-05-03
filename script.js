@@ -201,8 +201,7 @@ function operate() {
     } else if (operator === "*") {
         displayValue = `${multiply(a,b)}`;                      
     } else if (operator === "/" && b === 0) {
-        minorDisplay.textContent = `${firstNumber} ${operator} ${secondNumber} =`
-        mainDisplay.textContent = "I'm sorry Dave, I'm afraid I can't do that."
+        divideByZero();
         return;
     } else if (operator === "/") {
         displayValue = `${divide(a,b)}`;
@@ -275,4 +274,16 @@ function removeSelected() {
     } else {
         return;
     }
+}
+
+function divideByZero() {
+
+    minorDisplay.textContent = `${firstNumber} ${operator} ${secondNumber} =`
+    mainDisplay.textContent = "I'm sorry Dave";
+    mainDisplay.style.opacity = "0";
+
+    setTimeout(() => {
+        mainDisplay.textContent = "I'm afraid I can't do that";
+        mainDisplay.style.opacity = "1";        
+    },1800);
 }
