@@ -17,14 +17,15 @@
     background-color: rgb(230, 230, 230);
     text-align: right;
     align-items: center;
-    grid-template-rows: 1fr 2fr;
+    grid-template-rows: 1fr 1fr 2fr;
     font-family: 'Orbitron', sans-serif;
-    min-height: 60px;
+    min-height: 80px;
     display: grid;
     grid-template-columns: 1fr;
 }
 
-#minor-display {
+#minor-display1,
+#minor-display2 {
     font-size: 8pt;
     padding: 2px;
 }

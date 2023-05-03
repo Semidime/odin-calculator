@@ -9,7 +9,9 @@ let UserDVInput = 0;
 
 /* set initial mainDisplay */
 const mainDisplay = document.getElementById('main-display');
-const minorDisplay = document.getElementById('minor-display');
+const minorDisplay1 = document.getElementById('minor-display1');
+const minorDisplay2 = document.getElementById('minor-display2');
+
 mainDisplay.textContent = 0;
 
 
@@ -171,7 +173,7 @@ function assignOperator(opSymbol) {
 
        /* update display */
        mainDisplay.textContent = `${formatDisplay(displayValue)}`;
-       minorDisplay.textContent = `${formatDisplay(firstNumber)} ${operator}`;                
+       minorDisplay1.textContent = `${formatDisplay(firstNumber)} ${operator}`;                
 
    } else {
        /* assign new operator variable */
@@ -184,7 +186,7 @@ function assignOperator(opSymbol) {
        
        /* update display */
        mainDisplay.textContent = `${formatDisplay(displayValue)}`;
-       minorDisplay.textContent = `${formatDisplay(firstNumber)} ${operator}`;
+       minorDisplay1.textContent = `${formatDisplay(firstNumber)} ${operator}`;
    }
 }
 
@@ -213,7 +215,8 @@ function operate() {
     }
     console.log(displayValue);
     mainDisplay.textContent = `${formatDisplay(displayValue)}`;
-    minorDisplay.textContent = `${formatDisplay(firstNumber)} ${operator} ${formatDisplay(secondNumber)} =`;
+    minorDisplay1.textContent = `${formatDisplay(firstNumber)} ${operator}`;
+    minorDisplay2.textContent = `${formatDisplay(secondNumber)} =`;
 
     /* set overwriteDV to 1
     set UserDVInput to 0*/
@@ -268,7 +271,8 @@ function reset() {
     UserDVInput = 0;
     toggleAssignNumber = 0;
     mainDisplay.textContent = `${formatDisplay(displayValue)}`;
-    minorDisplay.textContent = "";
+    minorDisplay1.textContent = "";
+    minorDisplay2.textContent = "";
 }
 
 /* function to remove css from prev. selected operator */
@@ -283,7 +287,8 @@ function removeSelected() {
 
 function divideByZero() {
 
-    minorDisplay.textContent = `${formatDisplay(firstNumber)} ${operator} ${formatDisplay(secondNumber)} =`
+    minorDisplay1.textContent = `${formatDisplay(firstNumber)} ${operator}`
+    minorDisplay2.textContent = `${formatDisplay(secondNumber)} =`
     mainDisplay.textContent = "I'm sorry Dave";
     mainDisplay.style.opacity = "0";
 
