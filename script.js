@@ -14,6 +14,18 @@ const minorDisplay2 = document.getElementById('minor-display2');
 
 mainDisplay.textContent = 0;
 
+/* TO BE REMOVED */
+const displayTAN = document.getElementById('bullet1');
+const displayOverwriteDV = document.getElementById('bullet2');
+const displayUserDVInput = document.getElementById('bullet3');
+const displayFirstNumber = document.getElementById('bullet4');
+const displaySecondNumber = document.getElementById('bullet5');
+displayTAN.textContent = `toggleAssignNumber: ${toggleAssignNumber}`;
+displayOverwriteDV.textContent =`overwriteDV: ${overwriteDV}`;
+displayUserDVInput.textContent = `userDVInput: ${UserDVInput}`;
+displayFirstNumber.textContent = `firstNumber: ${firstNumber}`;
+displaySecondNumber.textContent = `secondNumber: ${secondNumber}`;
+
 
 /* EVENT LISTENERS */
 /* Mouse inputs */
@@ -125,6 +137,9 @@ function buildDisplayValue(digit) {
         displayValue += digit;
     }
     mainDisplay.textContent = `${formatDisplay(displayValue)}`
+
+    /* TO BE REMOVED */
+    updateVariableList();
 }
 
 /* function to allow user to delete last displayValue input */
@@ -144,6 +159,9 @@ function backspace() {
     }
 
     mainDisplay.textContent = `${formatDisplay(displayValue)}`
+
+    /* TO BE REMOVED */
+    updateVariableList();
  }
 
 /* function to assign selected operator  
@@ -190,6 +208,9 @@ function assignOperator(opSymbol) {
        minorDisplay1.textContent = `${formatDisplay(firstNumber)} ${operator}`;
        minorDisplay2.textContent = "";   
    }
+
+   /* TO BE REMOVED */
+   updateVariableList();
 }
 
 /* operate function - calls a basic calculator function based on the 
@@ -226,6 +247,9 @@ function operate() {
     UserDVInput = 0;
     /* set toggleAssignNumber to 1*/
     toggleAssignNumber = 1;
+
+    /* TO BE REMOVED */
+    updateVariableList();
 }
 
 /* basic addition function to return the sum of two numbers */
@@ -253,6 +277,9 @@ function assignFirstNumber() {
     firstNumber = Number(displayValue);
     overwriteDV = 1;
     UserDVInput = 0;
+
+    /* TO BE REMOVED */
+    updateVariableList();
 }
 
 /* function to assign value to secondNumber variable */
@@ -260,6 +287,9 @@ function assignSecondNumber() {
     secondNumber = Number(displayValue);
     overwriteDV = 1;
     UserDVInput = 0;
+
+    /* TO BE REMOVED */
+    updateVariableList();
 }
 
 /* function to reset calculator and restore initial values */
@@ -275,6 +305,9 @@ function reset() {
     mainDisplay.textContent = `${formatDisplay(displayValue)}`;
     minorDisplay1.textContent = "";
     minorDisplay2.textContent = "";
+
+    /* TO BE REMOVED */
+    updateVariableList();
 }
 
 /* function to remove css from prev. selected operator */
@@ -310,4 +343,13 @@ function formatDisplay(input) {
         console.log(Intl.NumberFormat("en-GB",{ maximumFractionDigits: 15 }).format(input));
         return Intl.NumberFormat("en-GB",{ maximumFractionDigits: 15 }).format(input);
     }
+}
+
+/* TO BE REMOVED */
+function updateVariableList() {
+displayTAN.textContent = `toggleAssignNumber: ${toggleAssignNumber}`;
+displayOverwriteDV.textContent =`OverwriteDV: ${overwriteDV}`;
+displayUserDVInput.textContent = `userDVInput: ${UserDVInput}`;
+displayFirstNumber.textContent = `firstNumber: ${firstNumber}`;
+displaySecondNumber.textContent = `secondNumber: ${secondNumber}`;
 }
