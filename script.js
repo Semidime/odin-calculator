@@ -62,7 +62,8 @@ mainDisplay.textContent = 0;
             buildDisplayValue(event.key);
 
     /* 2. operator keys */
-        } else if (kbdOperators.includes(event.key)) {   
+        } else if (kbdOperators.includes(event.key)) { 
+            event.preventDefault();  
             assignOperator(event.key);    
 
     /* 3. equals (enter key) 
