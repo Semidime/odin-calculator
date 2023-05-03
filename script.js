@@ -118,11 +118,11 @@ function buildDisplayValue(digit) {
 
 	} else if (displayValue.replaceAll(/[-.]/g,"").length >= 16) {
         return;
-        
+
     } else {
         displayValue += digit;
     }
-    mainDisplay.textContent = `${displayValue}`
+    mainDisplay.textContent = `${formatDisplay(displayValue)}`
 }
 
 /* function to allow user to delete last displayValue input */
@@ -141,7 +141,7 @@ function backspace() {
         UserDVInput = 0;
     }
 
-    mainDisplay.textContent = `${displayValue}`
+    mainDisplay.textContent = `${formatDisplay(displayValue)}`
  }
 
 /* function to assign selected operator  
@@ -170,8 +170,8 @@ function assignOperator(opSymbol) {
        toggleAssignNumber = 0;
 
        /* update display */
-       mainDisplay.textContent = displayValue;
-       minorDisplay.textContent = `${firstNumber} ${operator}`;                
+       mainDisplay.textContent = `${formatDisplay(displayValue)}`;
+       minorDisplay.textContent = `${formatDisplay(firstNumber)} ${operator}`;                
 
    } else {
        /* assign new operator variable */
@@ -183,8 +183,8 @@ function assignOperator(opSymbol) {
        toggleAssignNumber = 0;
        
        /* update display */
-       mainDisplay.textContent = displayValue;
-       minorDisplay.textContent = `${firstNumber} ${operator}`;
+       mainDisplay.textContent = `${formatDisplay(displayValue)}`;
+       minorDisplay.textContent = `${formatDisplay(firstNumber)} ${operator}`;
    }
 }
 
@@ -212,8 +212,8 @@ function operate() {
         displayValue = `${divide(a,b)}`;
     }
     console.log(displayValue);
-    mainDisplay.textContent = `${displayValue}`;
-    minorDisplay.textContent = `${firstNumber} ${operator} ${secondNumber} =`;
+    mainDisplay.textContent = `${formatDisplay(displayValue)}`;
+    minorDisplay.textContent = `${formatDisplay(firstNumber)} ${operator} ${formatDisplay(secondNumber)} =`;
 
     /* set overwriteDV to 1
     set UserDVInput to 0*/
@@ -267,7 +267,7 @@ function reset() {
     overwriteDV = 1;
     UserDVInput = 0;
     toggleAssignNumber = 0;
-    mainDisplay.textContent = `${displayValue}`;
+    mainDisplay.textContent = `${formatDisplay(displayValue)}`;
     minorDisplay.textContent = "";
 }
 
@@ -283,7 +283,7 @@ function removeSelected() {
 
 function divideByZero() {
 
-    minorDisplay.textContent = `${firstNumber} ${operator} ${secondNumber} =`
+    minorDisplay.textContent = `${formatDisplay(firstNumber)} ${operator} ${formatDisplay(secondNumber)} =`
     mainDisplay.textContent = "I'm sorry Dave";
     mainDisplay.style.opacity = "0";
 
@@ -291,4 +291,16 @@ function divideByZero() {
         mainDisplay.textContent = "I'm afraid I can't do that";
         mainDisplay.style.opacity = "1";        
     },1800);
+}
+
+function formatDisplay(input) {
+    if (Number(input) == 0) {
+        return `${input}`;    
+    } else if (Number(input) >= 1e+16) {
+        console.log(Number(input).toExponential());
+        return Number(input).toExponential();
+    } else {
+        console.log(Intl.NumberFormat("en-GB",{ maximumFractionDigits: 15 }).format(input));
+        return Intl.NumberFormat("en-GB",{ maximumFractionDigits: 15 }).format(input);
+    }
 }
