@@ -5,7 +5,8 @@ let firstNumber = undefined;
 let secondNumber = undefined;
 let overwriteDV = 1;
 let toggleAssignNumber = 0;
-let UserDVInput = 0;
+let userDVInput = 0;
+let userEqlsInput = 0;
 
 /* set initial mainDisplay */
 const mainDisplay = document.getElementById('main-display');
@@ -20,11 +21,15 @@ const displayOverwriteDV = document.getElementById('bullet2');
 const displayUserDVInput = document.getElementById('bullet3');
 const displayFirstNumber = document.getElementById('bullet4');
 const displaySecondNumber = document.getElementById('bullet5');
+const displayDV = document.getElementById('bullet6');
+const displayUserEqlsInput = document.getElementById('bullet7');
 displayTAN.textContent = `toggleAssignNumber: ${toggleAssignNumber}`;
 displayOverwriteDV.textContent =`overwriteDV: ${overwriteDV}`;
-displayUserDVInput.textContent = `userDVInput: ${UserDVInput}`;
+displayUserDVInput.textContent = `userDVInput: ${userDVInput}`;
 displayFirstNumber.textContent = `firstNumber: ${firstNumber}`;
 displaySecondNumber.textContent = `secondNumber: ${secondNumber}`;
+displayDV.textContent = `displayValue: ${displayValue}`;
+displayUserEqlsInput.textContent = `userEqlsInput: ${userEqlsInput}`;
 
 
 /* EVENT LISTENERS */
@@ -56,6 +61,10 @@ displaySecondNumber.textContent = `secondNumber: ${secondNumber}`;
             assignFirstNumber();
             operate();
         }
+
+        userEqlsInput = 1;
+        /* TO BE REMOVED */
+        updateVariableList();
     });
 
     /* 4. clear button - calls reset function*/
@@ -92,6 +101,9 @@ displaySecondNumber.textContent = `secondNumber: ${secondNumber}`;
                 operate();
             }  
             
+            userEqlsInput = 1;
+            /* TO BE REMOVED */
+            updateVariableList();
     /* 4. clear (Esc key) */
         } else if (event.key === "Escape") {        
             reset();
@@ -113,7 +125,7 @@ function buildDisplayValue(digit) {
     if (overwriteDV === 1 && digit === ".") {
         displayValue = "0.";
         overwriteDV = 0;
-        UserDVInput = 1;
+        userDVInput = 1;
 
     } else if (digit === "+/-") {
         if (displayValue.search(/\-/) === 0) {
@@ -125,7 +137,7 @@ function buildDisplayValue(digit) {
     } else if (overwriteDV === 1) {
         displayValue = digit;
         overwriteDV = 0;
-        UserDVInput = 1;
+        userDVInput = 1;
 
     } else if (digit === "." && displayValue.search(/\./) != -1) {
         return;
@@ -147,15 +159,15 @@ function backspace() {
     if (displayValue.length == 2 && displayValue.charAt(0) === "-") {
         displayValue = "0";
         overwriteDV = 1;
-        UserDVInput = 0;
+        userDVInput = 0;
 
-    } else if (displayValue.length > 1 && UserDVInput == 1) {
+    } else if (displayValue.length > 1 && userDVInput == 1) {
         displayValue = displayValue.slice(0,-1);
 
-    } else if (displayValue.length == 1 && UserDVInput == 1) {
+    } else if (displayValue.length == 1 && userDVInput == 1) {
         displayValue = "0";
         overwriteDV = 1;
-        UserDVInput = 0;
+        userDVInput = 0;
     }
 
     mainDisplay.textContent = `${formatDisplay(displayValue)}`
@@ -175,7 +187,7 @@ function assignOperator(opSymbol) {
     if (opSymbol === "*") {document.getElementById("multiply").classList.add('selected-op')};
     if (opSymbol === "/") {document.getElementById("divide").classList.add('selected-op')};
 
-    if(firstNumber !== undefined && UserDVInput == 1) {
+    if (firstNumber !== undefined && userDVInput == 1 && userEqlsInput !== 1) {
        /* assign current DV to secondNumber variable and call operate BEFORE
        updating operator variable */
        assignSecondNumber();
@@ -184,10 +196,11 @@ function assignOperator(opSymbol) {
        /* assign new operator variable */
        operator = opSymbol;
        
-       /*  assign displayValue (i.e. result of operation) to firstNumber
-       and set tAN to 0*/
+       /*  assign displayValue (i.e. result of operation) to firstNumber,
+       set tAN to 0, set userEqlsInput to 0*/
        assignFirstNumber();
        toggleAssignNumber = 0;
+       userEqlsInput = 0;
 
        /* update display */
        mainDisplay.textContent = `${formatDisplay(displayValue)}`;
@@ -198,10 +211,11 @@ function assignOperator(opSymbol) {
        /* assign new operator variable */
        operator = opSymbol;
        
-       /* assign current displayValue to firstNumber
-       and set tAN to 0 */
+       /* assign current displayValue to firstNumber,
+       set tAN to 0, set userEqlsInput to 0*/
        assignFirstNumber();
        toggleAssignNumber = 0;
+       userEqlsInput = 0;
        
        /* update display */
        mainDisplay.textContent = `${formatDisplay(displayValue)}`;
@@ -242,9 +256,9 @@ function operate() {
     minorDisplay2.textContent = `${formatDisplay(secondNumber)} =`;
 
     /* set overwriteDV to 1
-    set UserDVInput to 0*/
+    set userDVInput to 0*/
     overwriteDV = 1;
-    UserDVInput = 0;
+    userDVInput = 0;
     /* set toggleAssignNumber to 1*/
     toggleAssignNumber = 1;
 
@@ -276,7 +290,7 @@ function divide(a,b) {
 function assignFirstNumber() {
     firstNumber = Number(displayValue);
     overwriteDV = 1;
-    UserDVInput = 0;
+    userDVInput = 0;
 
     /* TO BE REMOVED */
     updateVariableList();
@@ -286,7 +300,7 @@ function assignFirstNumber() {
 function assignSecondNumber() {
     secondNumber = Number(displayValue);
     overwriteDV = 1;
-    UserDVInput = 0;
+    userDVInput = 0;
 
     /* TO BE REMOVED */
     updateVariableList();
@@ -300,7 +314,7 @@ function reset() {
     secondNumber = undefined;
     displayValue = "0";
     overwriteDV = 1;
-    UserDVInput = 0;
+    userDVInput = 0;
     toggleAssignNumber = 0;
     mainDisplay.textContent = `${formatDisplay(displayValue)}`;
     minorDisplay1.textContent = "";
@@ -348,8 +362,10 @@ function formatDisplay(input) {
 /* TO BE REMOVED */
 function updateVariableList() {
 displayTAN.textContent = `toggleAssignNumber: ${toggleAssignNumber}`;
-displayOverwriteDV.textContent =`OverwriteDV: ${overwriteDV}`;
-displayUserDVInput.textContent = `userDVInput: ${UserDVInput}`;
+displayOverwriteDV.textContent =`overwriteDV: ${overwriteDV}`;
+displayUserDVInput.textContent = `userDVInput: ${userDVInput}`;
 displayFirstNumber.textContent = `firstNumber: ${firstNumber}`;
 displaySecondNumber.textContent = `secondNumber: ${secondNumber}`;
+displayDV.textContent = `displayValue: ${displayValue}`;
+displayUserEqlsInput.textContent = `userEqlsInput: ${userEqlsInput}`;
 }
