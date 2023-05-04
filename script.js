@@ -135,18 +135,14 @@ function buildDisplayValue(digit) {
 
 /* function to allow user to delete last displayValue input */
 function backspace() {
-    if (displayValue.length == 2 && displayValue.charAt(0) === "-") {
+    if ((displayValue.length == 2 && displayValue.charAt(0) === "-") ||
+    displayValue === "-0." || ( displayValue.length == 1 && userDVInput == 1) ) {
         displayValue = "0";
         overwriteDV = 1;
         userDVInput = 0;
 
     } else if (displayValue.length > 1 && userDVInput == 1) {
         displayValue = displayValue.slice(0,-1);
-
-    } else if (displayValue.length == 1 && userDVInput == 1) {
-        displayValue = "0";
-        overwriteDV = 1;
-        userDVInput = 0;
     }
 
     mainDisplay.textContent = `${formatDisplay(displayValue)}`
@@ -309,20 +305,11 @@ function formatDisplay(input) {
 
     const unformattedString = `${input}`;
     const decimalLocation = unformattedString.search(/\./);
-    const negatedString = unformattedString.search(/\-/) === 0;
 
     console.log( {unformattedString} );
-    console.log( {decimalLocation }, { negatedString });
+    console.log( {decimalLocation });
 
-    if (Number(unformattedString) == 0) {
-        if (decimalLocation === -1) {
-            if (negatedString === false) return "0";
-            else return "-0";
-        } else {
-            if (negatedString === false) return `${unformattedString.slice(decimalLocation - 1)}`;
-            else return `-${unformattedString.slice(decimalLocation - 1)}`;
-        }    
-    } else if (Number(unformattedString) >= 1e+16) {
+    if (Number(unformattedString) >= 1e+16) {
         return Number(unformattedString).toExponential();
     } else {
         if (decimalLocation === -1) {
