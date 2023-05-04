@@ -202,9 +202,7 @@ selected operator */
 function operate() {
     const a = firstNumber;
     const b = secondNumber;
-    console.log(a);
-    console.log(operator);
-    console.log(b);
+    console.log(`${a} ${operator} ${b}`);
 
     if (operator === "") {
         return;
@@ -220,7 +218,7 @@ function operate() {
     } else if (operator === "/") {
         displayValue = `${divide(a,b)}`;
     }
-    console.log(displayValue);
+
     mainDisplay.textContent = `${formatDisplay(displayValue)}`;
     minorDisplay1.textContent = `${formatDisplay(firstNumber)} ${operator}`;
     minorDisplay2.textContent = `${formatDisplay(secondNumber)} =`;
@@ -309,10 +307,8 @@ function formatDisplay(input) {
     if (Number(input) == 0) {
         return `${input}`;    
     } else if (Number(input) >= 1e+16) {
-        console.log(Number(input).toExponential());
         return Number(input).toExponential();
     } else {
-        console.log(Intl.NumberFormat("en-GB",{ maximumFractionDigits: 15 }).format(input));
         return Intl.NumberFormat("en-GB",{ maximumFractionDigits: 15 }).format(input);
     }
 }
