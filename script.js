@@ -32,9 +32,7 @@ mainDisplay.textContent = 0;
         opBtn.addEventListener('mousedown',function () {assignOperator(opBtn.textContent)})
     }) 
 
-    /* 3. equals button 
-    - assigns secondNumber variable (if toggleAssignNumber is 0) and calls operate()
-    - assigns firstNumber variable (if toggleAssignNumber is 1) and calls operate() */
+    /* 3. equals button*/
     const eqlBtn = document.querySelector('#equals-button');
 
     eqlBtn.addEventListener('mousedown', function () {
@@ -70,9 +68,7 @@ mainDisplay.textContent = 0;
             event.preventDefault();  
             assignOperator(event.key);    
 
-    /* 3. equals (enter key) 
-    - assigns secondNumber variable (if toggleAssignNumber is 0) and calls operate()
-    - assigns firstNumber variable (if toggleAssignNumber is 1) and calls operate()  */
+    /* 3. equals (enter key)*/
         } else if (event.key === "Enter") {        
             if (toggleAssignNumber === 0) {
                 assignSecondNumber();
@@ -107,11 +103,17 @@ function buildDisplayValue(digit) {
         userDVInput = 1;
 
     } else if (digit === "+/-") {
-        if (displayValue.search(/\-/) === 0) {
+        if (displayValue === "0") {
+            return
+        } else if (displayValue.search(/\-/) === 0) {
             displayValue = displayValue.slice(1);
         } else {
             displayValue = "-" + displayValue; 
         } 
+
+    } else if (digit === "0" && displayValue === "0") {
+        displayValue = "0"
+        return;
 
     } else if (overwriteDV === 1) {
         displayValue = digit;
@@ -127,6 +129,7 @@ function buildDisplayValue(digit) {
     } else {
         displayValue += digit;
     }
+    console.log(displayValue)
     mainDisplay.textContent = `${formatDisplay(displayValue)}`
 }
 
@@ -149,9 +152,8 @@ function backspace() {
     mainDisplay.textContent = `${formatDisplay(displayValue)}`
  }
 
-/* function to assign selected operator  
-call functions to assign values to firstNumber and secondNumber variables
-call operate function to perform calculations */
+/* function to assign selected operator, assign values to firstNumber and secondNumber variables
+ and call operate function */
 function assignOperator(opSymbol) {
     /* remove formatting from prev. operator and apply to new operator */
     if (operator !== "") {removeSelected()};
@@ -231,22 +233,22 @@ function operate() {
     toggleAssignNumber = 1;
 }
 
-/* basic addition function to return the sum of two numbers */
+/* addition function to return the sum of two numbers */
 function add(a,b) {
     return a + b;
 }
 
-/* basic subtraction function to return the difference between 2 numbers */
+/* subtraction function to return the difference between 2 numbers */
 function subtract(a,b) {
     return a - b;
 }
 
-/* basic multiplication function to return the product of two numbers */
+/* multiplication function to return the product of two numbers */
 function multiply(a,b) { 
     return a * b;
 }
 
-/* basic division function  to return the quotient of two numbers */
+/* division function  to return the quotient of two numbers */
 function divide(a,b) {
     return a / b;
 }
@@ -280,7 +282,7 @@ function reset() {
     minorDisplay2.textContent = "";
 }
 
-/* function to remove css from prev. selected operator */
+/* function to remove ".selected-op" class from prev. selected operator */
 function removeSelected() {
     if (document.getElementsByClassName('selected-op').length > 0) {
         const selectedBtn = document.querySelector('.selected-op')
@@ -304,11 +306,28 @@ function divideByZero() {
 }
 
 function formatDisplay(input) {
-    if (Number(input) == 0) {
-        return `${input}`;    
-    } else if (Number(input) >= 1e+16) {
-        return Number(input).toExponential();
+
+    const unformattedString = `${input}`;
+    const decimalLocation = unformattedString.search(/\./);
+    const negatedString = unformattedString.search(/\-/) === 0;
+
+    console.log( {unformattedString} );
+    console.log( {decimalLocation }, { negatedString });
+
+    if (Number(unformattedString) == 0) {
+        if (decimalLocation === -1) {
+            if (negatedString === false) return "0";
+            else return "-0";
+        } else {
+            if (negatedString === false) return `${unformattedString.slice(decimalLocation - 1)}`;
+            else return `-${unformattedString.slice(decimalLocation - 1)}`;
+        }    
+    } else if (Number(unformattedString) >= 1e+16) {
+        return Number(unformattedString).toExponential();
     } else {
-        return Intl.NumberFormat("en-GB",{ maximumFractionDigits: 15 }).format(input);
+        if (decimalLocation === -1) {
+        return Intl.NumberFormat("en-GB").format(unformattedString);
+        } else {
+        return `${Intl.NumberFormat("en-GB",{ maximumFractionDigits: 0, roundingMode: "trunc" }).format(unformattedString)}${unformattedString.slice(decimalLocation)}`;
     }
-}
+}}
