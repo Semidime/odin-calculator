@@ -15,22 +15,6 @@ const minorDisplay2 = document.getElementById('minor-display2');
 
 mainDisplay.textContent = 0;
 
-/* TO BE REMOVED */
-const displayTAN = document.getElementById('bullet1');
-const displayOverwriteDV = document.getElementById('bullet2');
-const displayUserDVInput = document.getElementById('bullet3');
-const displayFirstNumber = document.getElementById('bullet4');
-const displaySecondNumber = document.getElementById('bullet5');
-const displayDV = document.getElementById('bullet6');
-const displayUserEqlsInput = document.getElementById('bullet7');
-displayTAN.textContent = `toggleAssignNumber: ${toggleAssignNumber}`;
-displayOverwriteDV.textContent =`overwriteDV: ${overwriteDV}`;
-displayUserDVInput.textContent = `userDVInput: ${userDVInput}`;
-displayFirstNumber.textContent = `firstNumber: ${firstNumber}`;
-displaySecondNumber.textContent = `secondNumber: ${secondNumber}`;
-displayDV.textContent = `displayValue: ${displayValue}`;
-displayUserEqlsInput.textContent = `userEqlsInput: ${userEqlsInput}`;
-
 
 /* EVENT LISTENERS */
 /* Mouse inputs */
@@ -61,10 +45,7 @@ displayUserEqlsInput.textContent = `userEqlsInput: ${userEqlsInput}`;
             assignFirstNumber();
             operate();
         }
-
         userEqlsInput = 1;
-        /* TO BE REMOVED */
-        updateVariableList();
     });
 
     /* 4. clear button - calls reset function*/
@@ -99,11 +80,9 @@ displayUserEqlsInput.textContent = `userEqlsInput: ${userEqlsInput}`;
             } else {
                 assignFirstNumber();
                 operate();
-            }  
-            
+            }              
             userEqlsInput = 1;
-            /* TO BE REMOVED */
-            updateVariableList();
+
     /* 4. clear (Esc key) */
         } else if (event.key === "Escape") {        
             reset();
@@ -149,9 +128,6 @@ function buildDisplayValue(digit) {
         displayValue += digit;
     }
     mainDisplay.textContent = `${formatDisplay(displayValue)}`
-
-    /* TO BE REMOVED */
-    updateVariableList();
 }
 
 /* function to allow user to delete last displayValue input */
@@ -171,9 +147,6 @@ function backspace() {
     }
 
     mainDisplay.textContent = `${formatDisplay(displayValue)}`
-
-    /* TO BE REMOVED */
-    updateVariableList();
  }
 
 /* function to assign selected operator  
@@ -222,9 +195,6 @@ function assignOperator(opSymbol) {
        minorDisplay1.textContent = `${formatDisplay(firstNumber)} ${operator}`;
        minorDisplay2.textContent = "";   
    }
-
-   /* TO BE REMOVED */
-   updateVariableList();
 }
 
 /* operate function - calls a basic calculator function based on the 
@@ -261,9 +231,6 @@ function operate() {
     userDVInput = 0;
     /* set toggleAssignNumber to 1*/
     toggleAssignNumber = 1;
-
-    /* TO BE REMOVED */
-    updateVariableList();
 }
 
 /* basic addition function to return the sum of two numbers */
@@ -291,9 +258,6 @@ function assignFirstNumber() {
     firstNumber = Number(displayValue);
     overwriteDV = 1;
     userDVInput = 0;
-
-    /* TO BE REMOVED */
-    updateVariableList();
 }
 
 /* function to assign value to secondNumber variable */
@@ -301,9 +265,6 @@ function assignSecondNumber() {
     secondNumber = Number(displayValue);
     overwriteDV = 1;
     userDVInput = 0;
-
-    /* TO BE REMOVED */
-    updateVariableList();
 }
 
 /* function to reset calculator and restore initial values */
@@ -319,9 +280,6 @@ function reset() {
     mainDisplay.textContent = `${formatDisplay(displayValue)}`;
     minorDisplay1.textContent = "";
     minorDisplay2.textContent = "";
-
-    /* TO BE REMOVED */
-    updateVariableList();
 }
 
 /* function to remove css from prev. selected operator */
@@ -357,15 +315,4 @@ function formatDisplay(input) {
         console.log(Intl.NumberFormat("en-GB",{ maximumFractionDigits: 15 }).format(input));
         return Intl.NumberFormat("en-GB",{ maximumFractionDigits: 15 }).format(input);
     }
-}
-
-/* TO BE REMOVED */
-function updateVariableList() {
-displayTAN.textContent = `toggleAssignNumber: ${toggleAssignNumber}`;
-displayOverwriteDV.textContent =`overwriteDV: ${overwriteDV}`;
-displayUserDVInput.textContent = `userDVInput: ${userDVInput}`;
-displayFirstNumber.textContent = `firstNumber: ${firstNumber}`;
-displaySecondNumber.textContent = `secondNumber: ${secondNumber}`;
-displayDV.textContent = `displayValue: ${displayValue}`;
-displayUserEqlsInput.textContent = `userEqlsInput: ${userEqlsInput}`;
 }
