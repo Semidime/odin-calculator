@@ -2,23 +2,45 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100vh;
+}
+
+a {
+    color: inherit; 
+    text-decoration: inherit; 
+  }
+
+.calc-container {
+    display: flex;
+/*     align-items: center; */
+    justify-content: center;
+    height: 80vh;
+}
+
 .calc-body {
     display: flex;
     flex-direction: column;
-    max-width:300px;
-    min-width: 100px;
-    border: 2px solid lightgray;
-    border-radius: 5px;
+    row-gap: 10px;
+    width: 350px;
+    min-width: 275px;
+    height: 350px;
+    min-height: 300px;
+    border: 2px outset rgb(200,185,138);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 10vh;
+    background-color: rgb(200,185,138);
 }
 
 .calc-display {
-    border: 2px solid lightgray;
+    border: 2px inset rgb(200,185,138);
     border-radius: 5px;
-    background-color: rgb(230, 230, 230);
+    background-color: rgb(50, 50, 50);
     text-align: right;
     align-items: center;
     grid-template-rows: 1fr 1fr 2fr;
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Orbitron', Helvetica, sans-serif;
     min-height: 80px;
     display: grid;
     grid-template-columns: 1fr;
@@ -26,16 +48,22 @@
 
 #minor-display1,
 #minor-display2 {
-    font-size: 8pt;
-    padding: 2px;
+    color: rgb(65,255,0);
+    font-size: 10pt;
+    padding-right: 2px;
 }
 
 #main-display {
+    color: rgb(65,255,0);
+    font-size: 14pt;
     opacity: 1;
     transition: 2s opacity ease;
+    padding-right: 2px;
+    padding-left: 2px;
 }
 
 .calc-buttons {
+    flex-grow: 2;
     display: grid;
     gap: 5px;
     grid-template-columns: repeat(4, 1fr);
@@ -44,7 +72,7 @@
 
 .calc-digits {
     display: grid;
-    gap: 2px;
+    gap: 5px;
     grid-column: 1 / 4;
     grid-row: 1 / 5;
     grid-template-columns: repeat(3, 1fr);
@@ -53,7 +81,7 @@
 
 .calc-operators {
     display: grid;
-    gap: 2px;
+    gap: 5px;
     grid-column: 4 / 5;
     grid-row: 1 / 5;
     grid-template-columns: 1fr;
@@ -67,6 +95,7 @@
 
 .calc-tools {
     display: grid;
+    gap: 5px;
     grid-column: 1 / 5;
     grid-row: 5 / 6;
     grid-template-columns: 1fr 1fr 2fr;
@@ -79,4 +108,20 @@
     background-color: rgb(125, 125, 125);
     color: white;
     border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.calc-digits button {
+    background-color: rgb(201, 201, 201);
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.footer {
+    text-align: center;
+    font-family: Helvetica, sans-serif;
+    color: black;
+    font-weight: bold;
 }
