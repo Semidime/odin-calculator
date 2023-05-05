@@ -39,7 +39,7 @@ function buildDisplayValue(digit) {
     } else if (digit === "." && displayValue.search(/\./) != -1) {
         return;
 
-	} else if (displayValue.replaceAll(/[-.]/g,"").length >= 16) {
+	} else if (displayValue.replaceAll(/[-.]/g,"").length >= 13) {
         return;
 
     } else {
@@ -158,8 +158,8 @@ function formatDisplay(input) {
     const unformattedString = `${input}`;
     const decimalLocation = unformattedString.search(/\./);
 
-    if (Number(unformattedString) >= 1e+16) {
-        return Number(unformattedString).toExponential();
+    if (Number(unformattedString) >= 1e+13 || Number(unformattedString) <= -1e+13)  {
+        return Number(unformattedString).toExponential(7);
     } else {
         if (decimalLocation === -1) {
         return Intl.NumberFormat("en-GB").format(unformattedString);
