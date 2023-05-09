@@ -158,16 +158,30 @@ function formatDisplay(input) {
     const unformattedString = `${input}`;
     const decimalLocation = unformattedString.search(/\./);
 
+
     if (Number(unformattedString) >= 1e+13 || Number(unformattedString) <= -1e+13)  {
-        return Number(unformattedString).toExponential(7);
+        return Number(unformattedString).toExponential(10);
     } else {
         if (decimalLocation === -1) {
-        return Intl.NumberFormat("en-GB").format(unformattedString);
+            return Intl.NumberFormat("en-GB").format(unformattedString);
         } else {
-        return `${Intl.NumberFormat("en-GB",{ maximumFractionDigits: 0, roundingMode: "trunc" }).format(unformattedString)}${unformattedString.slice(decimalLocation)}`;
+        const truncatedInput = Math.trunc(Number(unformattedString));
+        const maxFractionDigits = 13 - String(truncatedInput).length;
+        const decimalValueString = unformattedString.slice(decimalLocation);     
+        const roundedDecimalValue = Math.round(Number(decimalValueString) * (10**maxFractionDigits)) / (10**maxFractionDigits); /* EPSILON??*/
+        console.log({truncatedInput});
+        console.log({maxFractionDigits});
+        console.log({decimalValueString});
+        console.log({roundedDecimalValue});
+        console.log(Number(input) > 0)
+
+            if (Number(decimalValueString) > 0) {
+                return Intl.NumberFormat("en-GB", { maximumFractionDigits: maxFractionDigits }).format(unformattedString);
+            } else {
+                return `${Intl.NumberFormat("en-GB").format(truncatedInput)}${decimalValueString}`;
+            }    
         }
-    }
-}
+}}
 
 function reset() {
     if(operator!=="") {removeSelected()}
