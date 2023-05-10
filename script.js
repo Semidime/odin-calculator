@@ -161,23 +161,19 @@ function formatDisplay(input) {
     const decimalLocation = inputString.search(/\./);
     const decimalValueString = inputString.slice(decimalLocation);
     const decimalValueNum = Number(decimalValueString);
-    console.table({inputString,truncatedNum,maxFractionDigits,decimalLocation,decimalValueString,decimalValueNum})
+/*     console.table({inputString,truncatedNum,maxFractionDigits,decimalLocation,decimalValueString,decimalValueNum}) */
 
 
     if (Number(inputString) >= 1e+13 || Number(inputString) <= -1e+13)  {
         return Number(inputString).toExponential(10);
-    } else if ((Number(inputString) > 0 && Number(inputString) < 0.000001) || (Number(inputString) < 0 && Number(inputString) > -0.000001)) {
+    } else if (decimalLocation === -1 || decimalValueNum > 0) { 
         return Intl.NumberFormat("en-GB", { maximumFractionDigits: maxFractionDigits }).format(inputString);
-    } else if (decimalLocation === -1) {
-        return Intl.NumberFormat("en-GB").format(inputString);
     } else {      
-            if (Number(decimalValueString) > 0) {
-                return Intl.NumberFormat("en-GB", { maximumFractionDigits: maxFractionDigits }).format(inputString);
-            } else {
-                return `${Intl.NumberFormat("en-GB").format(truncatedNum)}${decimalValueString}`;
-            }    
-    }
+    /* any inputString with a "decimal value" equivalent to zero (e.g. "0.", "0.0", "0.00" etc.*/
+        return `${Intl.NumberFormat("en-GB").format(truncatedNum)}${decimalValueString}`;
+    }    
 }
+
 
 function reset() {
     if(operator!=="") {removeSelected()}
