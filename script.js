@@ -155,33 +155,29 @@ function assignSecondNumber() {
 }
 
 function formatDisplay(input) {
-    const unformattedString = `${input}`;
-    const decimalLocation = unformattedString.search(/\./);
+    const inputString = input.toString();
+    const truncatedNum = Math.trunc(Number(inputString));
+    const maxFractionDigits = 13 - String(truncatedNum).length;
+    const decimalLocation = inputString.search(/\./);
+    const decimalValueString = inputString.slice(decimalLocation);
+    const decimalValueNum = Number(decimalValueString);
+    console.table({inputString,truncatedNum,maxFractionDigits,decimalLocation,decimalValueString,decimalValueNum})
 
 
-    if (Number(unformattedString) >= 1e+13 || Number(unformattedString) <= -1e+13)  {
-        return Number(unformattedString).toExponential(10);
-    } else {
-        if (decimalLocation === -1) {
-            return Intl.NumberFormat("en-GB").format(unformattedString);
-        } else {
-        const truncatedInput = Math.trunc(Number(unformattedString));
-        const maxFractionDigits = 13 - String(truncatedInput).length;
-        const decimalValueString = unformattedString.slice(decimalLocation);     
-        const roundedDecimalValue = Math.round(Number(decimalValueString) * (10**maxFractionDigits)) / (10**maxFractionDigits); /* EPSILON??*/
-        console.log({truncatedInput});
-        console.log({maxFractionDigits});
-        console.log({decimalValueString});
-        console.log({roundedDecimalValue});
-        console.log(Number(input) > 0)
-
+    if (Number(inputString) >= 1e+13 || Number(inputString) <= -1e+13)  {
+        return Number(inputString).toExponential(10);
+    } else if ((Number(inputString) > 0 && Number(inputString) < 0.000001) || (Number(inputString) < 0 && Number(inputString) > -0.000001)) {
+        return Intl.NumberFormat("en-GB", { maximumFractionDigits: maxFractionDigits }).format(inputString);
+    } else if (decimalLocation === -1) {
+        return Intl.NumberFormat("en-GB").format(inputString);
+    } else {      
             if (Number(decimalValueString) > 0) {
-                return Intl.NumberFormat("en-GB", { maximumFractionDigits: maxFractionDigits }).format(unformattedString);
+                return Intl.NumberFormat("en-GB", { maximumFractionDigits: maxFractionDigits }).format(inputString);
             } else {
-                return `${Intl.NumberFormat("en-GB").format(truncatedInput)}${decimalValueString}`;
+                return `${Intl.NumberFormat("en-GB").format(truncatedNum)}${decimalValueString}`;
             }    
-        }
-}}
+    }
+}
 
 function reset() {
     if(operator!=="") {removeSelected()}
