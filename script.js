@@ -12,6 +12,10 @@ const minorDisplay1 = document.getElementById('minor-display1');
 const minorDisplay2 = document.getElementById('minor-display2');
 mainDisplay.textContent = 0;
 
+
+
+addEventListeners();
+
 function buildDisplayValue(digit) {
     if (overwriteDV === 1 && digit === ".") {
         displayValue = "0.";
@@ -220,47 +224,42 @@ function divideByZero() {
     },6000);
 }
 
+function addEventListeners() {
 /* Mouse inputs */
-/* 1. calc-digits*/
 const digitBtns = document.querySelectorAll('div.calc-digits button');
+const opBtns = document.querySelectorAll('.op-button');
+const eqlBtn = document.querySelector('#equals-button');
+const clrBtn = document.querySelector('#clear-button');
+const delBtn = document.querySelector('#backspace-button');
 
+/* 1. calc-digits*/
 digitBtns.forEach((digitBtn) => {
-    digitBtn.addEventListener('mousedown',function () {buildDisplayValue(digitBtn.textContent)})
+    digitBtn.addEventListener('mousedown',inputMouseDigit)
 }) 
 
 /* 2. operator buttons*/
-const opBtns = document.querySelectorAll('.op-button');
-
 opBtns.forEach((opBtn) => {
-    opBtn.addEventListener('mousedown',function () {assignOperator(opBtn.textContent)})
+    opBtn.addEventListener('mousedown',inputMouseOperator)
 }) 
 
 /* 3. equals button*/
-const eqlBtn = document.querySelector('#equals-button');
-
-eqlBtn.addEventListener('mousedown', function () {
-    if (toggleAssignNumber === 0) {
-        assignSecondNumber();
-        operate();
-    } else {
-        assignFirstNumber();
-        operate();
-    }
-    userEqlsInput = 1;
-});
+eqlBtn.addEventListener('mousedown',inputEqualsSign);
 
 /* 4. clear button */
-const clrBtn = document.querySelector('#clear-button');
-clrBtn.addEventListener('mousedown',function () {reset()});
+clrBtn.addEventListener('mousedown',reset);
 
 /* 5. Delete button */
-const delBtn = document.querySelector('#backspace-button');
-delBtn.addEventListener('mousedown',function () {backspace()})
+delBtn.addEventListener('mousedown',backspace)
 
 /* Keyboard inputs */
-const kbdDigits = ["0","1","2","3","4","5","6","7","8","9","."];
-const kbdOperators = ["+","-","*","/"];
-document.addEventListener('keydown', (event) => {    
+document.addEventListener('keydown',processKeyboardInput);
+}
+
+function processKeyboardInput(event) {
+    const kbdDigits = ["0","1","2","3","4","5","6","7","8","9","."];
+    const kbdOperators = ["+","-","*","/"];
+    
+    console.log(event);
 
 /*  1. Calc-digits - build displayValue */
     if (kbdDigits.includes(event.key)) {
@@ -273,14 +272,7 @@ document.addEventListener('keydown', (event) => {
 
 /* 3. equals (enter key)*/
     } else if (event.key === "Enter") {        
-        if (toggleAssignNumber === 0) {
-            assignSecondNumber();
-            operate();
-        } else {
-            assignFirstNumber();
-            operate();
-        }              
-        userEqlsInput = 1;
+        inputEqualsSign();
 
 /* 4. clear (Esc key) */
     } else if (event.key === "Escape") {        
@@ -292,6 +284,37 @@ document.addEventListener('keydown', (event) => {
     
     /* exit if any other key pressed */    
     } else {   
-        return
-    };
-});
+        return;
+    }
+}
+
+function inputMouseDigit(event) {
+    const mouseDigits = ["0","1","2","3","4","5","6","7","8","9",".","+/-"];
+    console.log(this.textContent);
+    console.log(event);
+
+    if (mouseDigits.includes(this.textContent)) {
+        buildDisplayValue(this.textContent);
+    }
+}
+
+function inputMouseOperator(event) {
+    const mouseOperators = ["+","-","*","/"];
+    console.log(this.textContent);
+    console.log(event);
+
+    if (mouseOperators.includes(this.textContent)) { 
+    assignOperator(this.textContent);    
+    }
+}
+
+function inputEqualsSign() {
+    if (toggleAssignNumber === 0) {
+        assignSecondNumber();
+        operate();
+    } else {
+        assignFirstNumber();
+        operate();
+    }
+    userEqlsInput = 1;
+}
