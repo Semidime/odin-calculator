@@ -159,7 +159,7 @@ function assignSecondNumber() {
 function formatDisplay(input) {
     const inputString = input.toString();
     const truncatedNum = Math.trunc(Number(inputString));
-    const maxFractionDigits = 13 - String(truncatedNum).length;
+    const maxFractionDigits = 13 - String(truncatedNum).replaceAll(/[-]/g,"").length;
     const decimalLocation = inputString.search(/\./);
     const decimalValueString = inputString.slice(decimalLocation);
     const decimalValueNum = Number(decimalValueString);
@@ -175,7 +175,6 @@ function formatDisplay(input) {
         return `${Intl.NumberFormat("en-GB").format(truncatedNum)}${decimalValueString}`;
     }    
 }
-
 
 function reset() {
     if(operator!=="") {removeSelected()}
