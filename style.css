@@ -57,7 +57,9 @@ a {
     color: rgb(65,255,0);
     font-size: 14pt;
     opacity: 1;
-    transition: 2s opacity ease;
+    transition-delay: 0.25s;
+    transition-duration: 1.8s;
+    transition-timing-function: ease;
     padding-right: 2px;
     padding-left: 2px;
 }
