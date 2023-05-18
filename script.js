@@ -321,24 +321,12 @@ function processKeyboardInput(event) {
     }
 }
 
-function inputMouseDigit(event) {
-    const mouseDigits = ["0","1","2","3","4","5","6","7","8","9",".","+/-"];
-    console.log(this.textContent);
-    console.log(event);
-
-    if (mouseDigits.includes(this.textContent)) {
+function inputMouseDigit() {
         buildDisplayValue(this.textContent);
-    }
 }
 
-function inputMouseOperator(event) {
-    const mouseOperators = ["+","-","*","/"];
-    console.log(this.textContent);
-    console.log(event);
-
-    if (mouseOperators.includes(this.textContent)) { 
+function inputMouseOperator() {
     assignOperator(this.textContent);    
-    }
 }
 
 function inputEqualsSign() {
