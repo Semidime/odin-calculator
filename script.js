@@ -12,8 +12,6 @@ const minorDisplay1 = document.getElementById('minor-display1');
 const minorDisplay2 = document.getElementById('minor-display2');
 mainDisplay.textContent = 0;
 
-
-
 addEventListeners();
 
 function buildDisplayValue(digit) {
@@ -254,6 +252,36 @@ delBtn.addEventListener('mousedown',backspace)
 /* Keyboard inputs */
 document.addEventListener('keydown',processKeyboardInput);
 }
+
+function removeEventListeners() {
+    const digitBtns = document.querySelectorAll('div.calc-digits button');
+    const opBtns = document.querySelectorAll('.op-button');
+    const eqlBtn = document.querySelector('#equals-button');
+    const clrBtn = document.querySelector('#clear-button');
+    const delBtn = document.querySelector('#backspace-button');
+    
+    /* 1. calc-digits*/
+    digitBtns.forEach((digitBtn) => {
+        digitBtn.removeEventListener('mousedown',inputMouseDigit)
+    }) 
+    
+    /* 2. operator buttons*/
+    opBtns.forEach((opBtn) => {
+        opBtn.removeEventListener('mousedown',inputMouseOperator)
+    }) 
+    
+    /* 3. equals button*/
+    eqlBtn.removeEventListener('mousedown',inputEqualsSign);
+    
+    /* 4. clear button */
+    clrBtn.removeEventListener('mousedown',reset);
+    
+    /* 5. Delete button */
+    delBtn.removeEventListener('mousedown',backspace)
+    
+    /* Keyboard inputs */
+    document.removeEventListener('keydown',processKeyboardInput);
+    }
 
 function processKeyboardInput(event) {
     const kbdDigits = ["0","1","2","3","4","5","6","7","8","9","."];
