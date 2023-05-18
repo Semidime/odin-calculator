@@ -229,16 +229,20 @@ function divideByZero() {
     },5000);
 
     setTimeout(() => {
-        displayValue = "0";
         mainDisplay.style.transitionDuration = "0s";
         mainDisplay.style.opacity = "1";
         mainDisplay.style.color = "rgb(65,255,0)"
-        mainDisplay.textContent = "0"; 
-    },6500);
+        mainDisplay.textContent = "0";
+        minorDisplay2.textContent = "";
+        displayValue = "0"; 
+        secondNumber = undefined;
+        overwriteDV = 1;
+        userDVInput = 0;
+    },6250);
 
     setTimeout(() => {
         addEventListeners();  
-    },6500);
+    },6250);
 
 }
 
