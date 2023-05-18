@@ -201,6 +201,7 @@ function removeSelected() {
 }
 
 function divideByZero() {
+    removeEventListeners()
     minorDisplay1.textContent = `${formatDisplay(firstNumber)} ${operator}`
     minorDisplay2.textContent = `${formatDisplay(secondNumber)} =`
     mainDisplay.textContent = "I'm sorry Dave";
@@ -218,8 +219,13 @@ function divideByZero() {
     setTimeout(() => {
         displayValue = "0";
         mainDisplay.style.opacity = "1";
-        mainDisplay.textContent = "0";  
+        mainDisplay.textContent = "0"; 
     },6000);
+
+    setTimeout(() => {
+        addEventListeners();  
+    },7000);
+
 }
 
 function addEventListeners() {
